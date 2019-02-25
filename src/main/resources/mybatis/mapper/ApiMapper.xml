@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lance.business.dao.ApiMapper">
+    <resultMap id="selectInfoResult" type="com.lance.business.pojo.BusinessPoJo">
+        <result column="CODE" property="code" jdbcType="VARCHAR"/>
+        <result column="NAME" property="name" jdbcType="VARCHAR"/>
+        <result column="ADDRESS" property="address" jdbcType="VARCHAR"/>
+        <result column="AGE" property="age" jdbcType="DECIMAL"/>
+    </resultMap>
+    <resultMap type="java.util.HashMap" id="cursorMap">
+        <result column="p_CPK" property="p_CPK"/>
+    </resultMap>
+    <select id="selectInfo" parameterType="String" resultMap="selectInfoResult">
+        SELECT
+            '1' AS CODE,
+            '2' AS NAME,
+            '3' AS ADDRESS,
+            '4' AS AGE
+        FROM dual
+    </select>
+    <!-- 根据billCode获取BILL_TABLE信息 -->
+    <select id="getBillInfoByBillCode" parameterType="java.util.Map" resultType="com.lance.business.pojo.BillTable">
+        <![CDATA[
+        SELECT *
+        FROM BILL_TABLE
+        WHERE BILLCODE = #{param.billcode,jdbcType=VARCHAR}
+        ]]>
+    </select>
+    <!-- 查询返回map -->
+    <select id="getBillMap" parameterType="String" resultType="Map">
+        <![CDATA[
+        SELECT *
+        FROM BILL_TABLE
+        WHERE BILLCODE = #{billCode,jdbcType=VARCHAR}
+        ]]>
+    </select>
+    <!-- 查询返回list -->
+    <select id="getBillList" resultType="Map">
+        <![CDATA[
+        SELECT *
+        FROM BILL_TABLE
+        WHERE BILLCODE IN (#{billCode0,jdbcType=VARCHAR}, #{billCode1,jdbcType=VARCHAR})
+        ]]>
+    </select>
+    <!-- 程序包调用测试 -->
+    <select id="callMbTest" statementType="CALLABLE" parameterType="Map">
+        <![CDATA[
+        {call #{return_cursor, mode=OUT, jdbcType=CURSOR,javaType=ResultSet,resultMap=cursorMap}:= PKG_TEST.MBT(
+                #{col1, jdbcType=VARCHAR, mode=IN}, #{col2, jdbcType=VARCHAR, mode=IN})}
+        ]]>
+    </select>
+</mapper>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://wwww.mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lance.business.dao.SysMapper">
+    <!-- 获取当前系统时间 -->
+    <select id="getDBCurrentTime" parameterType="String" resultType="String">
+        <![CDATA[
+        select to_char(sysdate,'yyyy-MM-dd hh24:mi:ss') from dual
+        ]]>
+    </select>
+    <!-- 获取当前系统日期 -->
+    <select id="getDBCurrentDate" parameterType="String" resultType="String">
+        <![CDATA[
+        select to_char(sysdate,'yyyy-MM-dd') from dual
+        ]]>
+    </select>
+</mapper>
